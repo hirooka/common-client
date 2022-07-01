@@ -1,0 +1,52 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: common-client
+  profiles:
+    active: local
+  security:
+    oauth2:
+      client:
+        registration:
+          custom:
+            authorization-grant-type: client_credentials
+            client-id: ae03f151-aac5-40df-a986-2ab2c30a3c2d
+            client-secret: ${CLIENT_SECRET}
+            scope:
+              - 25c99316-6627-4b99-a24d-62c7a864220e/.default
+        provider:
+          custom:
+            token-uri: https://login.microsoftonline.com/3af40e66-2a29-4011-9878-86c5ca45a31a/oauth2/v2.0/token
+app:
+  env: ${ENV_STRING:bye}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+grpc:
+  server:
+    host: localhost
+    port: 6565
+    secure: false
+rest:
+  server:
+    host: localhost
+    port: 8083
+    secure: false
+---
+spring:
+  config:
+    activate:
+      on-profile: azure
+grpc:
+  server:
+    host: ${GRPC_SERVER_FQDN}
+    port: 443
+    secure: true
+rest:
+  server:
+    host: ${REST_SERVER_FQDN}
+    port: 443
+    secure: true
